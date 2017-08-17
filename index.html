@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trivia Game</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen:400,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  </head> 
+  <body>
+    <div id="content">
+      <h1>Name That Song!</h1>
+
+      <div id="intro_screen">
+        <p>See if you can guess which songs these lyrics belong to!</p>
+        <button id="start">Start Game</button>
+      </div>
+
+      <div id="question_screen">
+        <div id="time_remaining">
+          <!-- display time remaining for current question here -->
+          <span id="time">30</span>
+        </div>
+
+        <div id="question">
+          <!-- append question here -->
+
+        </div>
+
+        <div id="answer_list">
+          <!-- append list of answers here -->
+        </div>
+      </div>
+
+      <div id="result_screen">
+        <!-- append the result of the user's guess for each question -->
+      </div>
+
+      <div id="end_screen">
+        <h2>GAME OVER</h2>
+        <div id="score">
+          <!-- show the users' score here -->
+        </div>
+
+        <div id="restart">
+          <button id="restart_game">Restart Game</button>
+        </div>
+      </div>
+
+    </div>
+    
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script type="text/javascript" src="assets/javascript/app.js"></script>
+  </body>
+</html>
