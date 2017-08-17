@@ -51,7 +51,7 @@ h2 {
 
 #time {
 	font-weight: bold;
-	color: #f8ff77;
+	color: #afffa8;
 	opacity: .8;
 	font-size: 1.5em;
 }
@@ -69,6 +69,7 @@ h2 {
 	padding: 10px;
 	color: white;
 	font-size: 1.2em;
+	line-height: 1.5em;
 }
 
 #answer_list div:hover {
@@ -104,17 +105,17 @@ h2 {
 }
 
 .result-message {
-	color: #97fcb7;
+	color: #afffa8;
 	font-size: 2em;
 	text-align: center;
 }
 
 .incorrect {
-	color: #a51e10;
+	color: #ffa8a8;
 }
 
 .score-message {
-	color: #97fcb7;
+	color: #afffa8;
 	font-size: 1.5em;
 	text-align: center;
 	margin-top: 60px;
@@ -153,7 +154,21 @@ button:hover {
 		margin-top: 30px;
 	}
 
+	#intro_screen p {
+		margin: 0px 30px 0px 30px;
+	}
+
+	#score {
+		margin-left: 30px;
+		margin-right: 30px;
+	}
+
+	#question {
+		font-size: 4.5vw;
+	}
+
 	.answer {
 		width: 80vw;
+		font-size: 4.5vw;
 	}
 }

@@ -167,9 +167,8 @@ $(function() {
     this.clicked = false;
 
     this.timeRanOut = function() {
-      var _this = this;
-      _this.displayResult("Time Ran Out!");
-      _this.questionOver(false);
+      this.displayResult("Time Ran Out!");
+      this.questionOver(false);
     };
 
     //shows the result after time has ran out, or if user has guessed
@@ -192,17 +191,13 @@ $(function() {
     }
 
     this.questionOver = function(correct) {
-      // $("#answer_list").empty();
-
       var _this = this;
       if (correct) {
         _this.score++;
       }
       if (_this.remainingQuestions === 0) {
-        setTimeout(function() {
         _this.endGame();
         return false;
-        }, 1500);
       }
       //generate next question
       setTimeout(function() {
@@ -216,14 +211,17 @@ $(function() {
     };
 
     this.endGame = function() {
-      $("#answer_list").empty();
-      $("#question_screen").hide();
-      var message = "You guessed " + this.score + " answers correctly out of 10";
-      var $scoreMessage = $("<p>");
-      $scoreMessage.text(message);
-      $scoreMessage.addClass("score-message");
-      $("#score").append($scoreMessage);
-      $("#end_screen").show();
+      var _this = this;
+      setTimeout(function() {
+        $("#answer_list").empty();
+        $("#question_screen").hide();
+        var message = "You guessed " + _this.score + " answers correctly out of 10";
+        var $scoreMessage = $("<p>");
+        $scoreMessage.text(message);
+        $scoreMessage.addClass("score-message");
+        $("#score").append($scoreMessage);
+        $("#end_screen").show();
+    }, 1500);
     }
 
   }
