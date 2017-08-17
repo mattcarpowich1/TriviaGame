@@ -59,7 +59,7 @@ h2 {
 #question_screen {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	justify-content: space-around;
 	align-items: center;
 }
 
@@ -160,11 +160,19 @@ button:hover {
 	}
 
 	#intro_screen {
-		margin-top: 60px;
+		margin-top: 40px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		height: 68vh;
 	}
 
 	#start {
-		margin-top: 60px;
+		margin-top: 0px;
+	}
+
+	#question_screen {
+		height: 66vh;
 	}
 
 	#time_remaining {
@@ -189,6 +197,7 @@ button:hover {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		height: 40px;
 		width: 33vw;
 		font-size: 1em;
 		padding: 5px;
@@ -212,10 +221,19 @@ button:hover {
 
 	#intro_screen {
 		margin-top: 100px;
+		height: initial;
 	}
 
 	#start {
 		margin-top: 100px;
+	}
+
+	#question_screen {
+		height: initial;
+	}
+
+	#question {
+		margin-bottom: 10px;
 	}
 
 	#time {
@@ -246,11 +264,15 @@ button:hover {
 	}
 
 	.answer {
-		display: block;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		height: initial;
 		width: 80vw;
 		font-size: 4vw;
 		padding: 10px;
 		margin-top: 8px;
 		margin-bottom: 8px;
+		height: 30px;
 	}
 }

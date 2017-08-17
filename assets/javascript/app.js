@@ -112,11 +112,7 @@ $(function() {
       //if the answer is the correct one, give it class '.correct'
       for (var i = 0; i < 4; i++) {
 
-        //create new div
-        var $answer = $("<div>");
-
-        //add the answer class
-        $answer.addClass("answer");
+        var $answer = $("#answer_list").children().eq(i);
 
         //if this is the correct answer, add class '.correct'
         if (i === question.correctChoice) {
@@ -130,9 +126,6 @@ $(function() {
 
         //place answer string in div
         $answer.html(answerString);
-
-        //append answer div to #answer_list
-        $("#answer_list").append($answer);
       }
 
       //show the question screen
@@ -201,7 +194,14 @@ $(function() {
       }
       //generate next question
       setTimeout(function() {
-        $("#answer_list").empty();
+        // $("#answer_list").empty();
+        console.log("Before each");
+        $.each($(".answer"), function( index, value ) {
+          $(".answer").eq(index).empty();
+          $(".answer").eq(index).removeClass("correct");
+          $(".answer").eq(index).removeClass("correct-clicked");
+          $(".answer").eq(index).removeClass("incorrect-clicked");
+        });
         $("#result_screen").empty();
         $("#result_screen").hide();
         _this.buildQuestion(questions[_this.currentQuestion]);
@@ -213,7 +213,12 @@ $(function() {
     this.endGame = function() {
       var _this = this;
       setTimeout(function() {
-        $("#answer_list").empty();
+        $.each($(".answer"), function( index, value ) {
+          $(".answer").eq(index).empty();
+          $(".answer").eq(index).removeClass("correct");
+          $(".answer").eq(index).removeClass("correct-clicked");
+          $(".answer").eq(index).removeClass("incorrect-clicked");
+        });
         $("#question_screen").hide();
         var message = "You guessed " + _this.score + " answers correctly out of 10";
         var $scoreMessage = $("<p>");
@@ -234,7 +239,7 @@ $(function() {
     game.timer();
   });
 
-  $("#answer_list").on("click", ".answer", function() {
+  $(".answer").on("click", function() {
     clearInterval(game.intervalID);
     if (game.clicked) {
       return false;
