@@ -124,9 +124,9 @@ $(function() {
         }
 
         //format the song title and artist 
-        var answerString = '"' + question.answerList[i][0] + '"';
+        var answerString = '<h3>"' + question.answerList[i][0] + '"';
         answerString += ' by ';
-        answerString += '<span class="artist">' + question.answerList[i][1] + '</span>';
+        answerString += '<span class="artist">' + question.answerList[i][1] + '</span></h3>';
 
         //place answer string in div
         $answer.html(answerString);
