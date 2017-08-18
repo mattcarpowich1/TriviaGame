@@ -193,6 +193,29 @@ button:hover {
 		justify-content: space-between;
 	}
 
+	#end_screen {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		height: 65vh;
+	}
+
+	h2 {
+		margin: 0;
+	}
+
+	.score-message {
+		margin-top: 0;
+	}
+
+	button {
+		margin: 0;
+	}
+
+	#restart {
+		margin: 0;
+	}
+
 	.answer {
 		display: flex;
 		justify-content: center;
@@ -211,7 +234,7 @@ button:hover {
 	#content {
 		width: 93%;
 		padding: 0px;
-		height: 90vh;
+		height: 93vh;
 	}
 
 	h1 {
