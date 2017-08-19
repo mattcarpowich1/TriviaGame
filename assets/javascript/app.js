@@ -1,6 +1,5 @@
 $(function() {
 
-  //object containing all questions/answers
   var questions = [
     {
       text: "I walk a lonely road, <br>the only one that I have ever known...",
@@ -30,7 +29,7 @@ $(function() {
       text: "My baby don't mess around,<br>Because she loves me so,<br>And this I know for sho...",
       answerList: [ ["In Da Club", "50 Cent"],
                     ["Hey Ya", "Outkast"],
-                    ["Crazy", "Garls Barkley"],
+                    ["Crazy", "Gnarls Barkley"],
                     ["My Girls", "Animal Collective"] ],
       correctChoice: 1
     },
@@ -38,7 +37,7 @@ $(function() {
       text: "I remember when,<br>I remember, I remember when I lost my mind...",
       answerList: [ ["Time to Pretend", "MGMT"],
                     ["Feel Good Inc.", "Gorillaz"],
-                    ["Crazy", "Garls Barkley"],
+                    ["Crazy", "Gnarls Barkley"],
                     ["Such Great Heights", "The Postal Service"] ],
       correctChoice: 2
     }, 
@@ -71,11 +70,11 @@ $(function() {
       answerList: [ ["New Slang", "The Shins"],
                     ["Rebellion", "Arcade Fire"],
                     ["Jesus Walks", "Kanye West"],
-                    ["Viva La Vida", "M.I.A."] ],
+                    ["Viva La Vida", "Coldplay"] ],
       correctChoice: 1
     },
     {
-      text: "Gold teeth and a curse for this town,<br>Were all in my mouth",
+      text: "Gold teeth and a curse for this town,<br>Were all in my mouth...",
       answerList: [ ["New Slang", "The Shins"],
                     ["Mr. Brightside", "The Killers"],
                     ["Time to Pretend", "MGMT"],
@@ -93,8 +92,10 @@ $(function() {
   function Game() {
 
     this.score = 0;
+
     //index of questions array (0 indexed)
     this.currentQuestion = 0;
+
     //creates html for a given question
     this.buildQuestion = function(question) {
 
@@ -103,18 +104,16 @@ $(function() {
       _this.currentQuestion += 1;
       _this.remainingQuestions -= 1;
 
-      //insert question text into #question div
       $("#question").html(question.text);
 
       game.clicked = false;
 
-      //for each possible answer, create a div and append to #answer_list
+      //for each possible answer, append answer text to corresponding div
       //if the answer is the correct one, give it class '.correct'
       for (var i = 0; i < 4; i++) {
 
         var $answer = $("#answer_list").children().eq(i);
 
-        //if this is the correct answer, add class '.correct'
         if (i === question.correctChoice) {
           $answer.addClass("correct");
         }
@@ -124,25 +123,21 @@ $(function() {
         answerString += ' by ';
         answerString += '<span class="artist">' + question.answerList[i][1] + '</span></h3>';
 
-        //place answer string in div
         $answer.html(answerString);
       }
 
-      //show the question screen
       $("#question_screen").show();
 
     };
 
-    //interval id
     this.intervalID;
 
-    //time remaining for current question
     this.timeLeft;
 
     //starts timer and calls timeRanOut if time reaches 0
     this.timer = function() {
       var _this = this;
-      _this.timeLeft = 30;
+      _this.timeLeft = 15;
       $("#time").text(_this.timeLeft);
       _this.intervalID = setInterval(function() {
         _this.timeLeft -= 1;
@@ -154,48 +149,41 @@ $(function() {
       }, 1000);
     };
 
-    //remaining questions
     this.remainingQuestions = 10;
 
     this.clicked = false;
 
     this.timeRanOut = function() {
-      this.displayResult("Time Ran Out!");
-      this.questionOver(false);
+      var correctAnswer = questions[game.currentQuestion - 1].answerList[questions[game.currentQuestion - 1].correctChoice];
+      this.displayResult("Time Ran Out!", correctAnswer);
+      this.questionOver(false, 1500);
     };
 
-    //shows the result after time has ran out, or if user has guessed
-    this.displayResult = function(str) {
-      if (this.remainingQuestions === 0) {
-        return false;
+    //shows the result after user guesses answer, or if time runs out
+    this.displayResult = function(str, correct) {
+      var correctString = 'The answer was "' + correct[0] + '" by ' + correct[1] + '!';
+      $("#question_screen").hide();
+      var message = str;
+      var $resultMessage = $("<p>");
+      var $answerMessage = $("<p>");
+      $resultMessage.text(message);
+      $answerMessage.html(correctString);
+      $answerMessage.addClass("answer_message");
+      $resultMessage.addClass("result-message");
+      if (str === "Incorrect!" || str === "Time Ran Out!") {
+        $resultMessage.addClass("incorrect");
       }
-      setTimeout(function() {
-        $("#question_screen").hide();
-        var message = str;
-        var $resultMessage = $("<p>");
-        $resultMessage.text(message);
-        $resultMessage.addClass("result-message");
-        if (str === "Incorrect!") {
-          $resultMessage.addClass("incorrect");
-        }
-        $("#result_screen").append($resultMessage);
-        $("#result_screen").show();
-      }, 1500);
+      $("#result_screen").append($resultMessage);
+      $("#result_screen").append($answerMessage);
+      $("#result_screen").show();
     }
 
-    this.questionOver = function(correct) {
-      var _this = this;
+    this.questionOver = function(correct, t) {
       if (correct) {
-        _this.score++;
+        this.score++;
       }
-      if (_this.remainingQuestions === 0) {
-        _this.endGame();
-        return false;
-      }
-      //generate next question
+      var _this = this;
       setTimeout(function() {
-        // $("#answer_list").empty();
-        console.log("Before each");
         $.each($(".answer"), function( index, value ) {
           $(".answer").eq(index).empty();
           $(".answer").eq(index).removeClass("correct");
@@ -204,29 +192,31 @@ $(function() {
         });
         $("#result_screen").empty();
         $("#result_screen").hide();
+        if (_this.remainingQuestions === 0) {
+          _this.endGame();
+          return false;
+        }
         _this.buildQuestion(questions[_this.currentQuestion]);
         _this.timer();
-      }, 4000);
+      }, t);
       
     };
 
     this.endGame = function() {
-      var _this = this;
-      setTimeout(function() {
-        $.each($(".answer"), function( index, value ) {
-          $(".answer").eq(index).empty();
-          $(".answer").eq(index).removeClass("correct");
-          $(".answer").eq(index).removeClass("correct-clicked");
-          $(".answer").eq(index).removeClass("incorrect-clicked");
-        });
-        $("#question_screen").hide();
-        var message = "You guessed " + _this.score + " answers correctly out of 10";
-        var $scoreMessage = $("<p>");
-        $scoreMessage.text(message);
-        $scoreMessage.addClass("score-message");
-        $("#score").append($scoreMessage);
-        $("#end_screen").show();
-    }, 1500);
+      // var _this = this;
+      $.each($(".answer"), function( index, value ) {
+        $(".answer").eq(index).empty();
+        $(".answer").eq(index).removeClass("correct");
+        $(".answer").eq(index).removeClass("correct-clicked");
+        $(".answer").eq(index).removeClass("incorrect-clicked");
+      });
+      $("#question_screen").hide();
+      var message = "You guessed " + this.score + " answers correctly out of 10";
+      var $scoreMessage = $("<p>");
+      $scoreMessage.text(message);
+      $scoreMessage.addClass("score-message");
+      $("#score").append($scoreMessage);
+      $("#end_screen").show();
     }
 
   }
@@ -245,15 +235,22 @@ $(function() {
       return false;
     }
     game.clicked = true;
+
+    var correctAnswer = questions[game.currentQuestion - 1].answerList[questions[game.currentQuestion - 1].correctChoice];
+
     if ($(this).hasClass("correct")) {
       $(this).addClass("correct-clicked");
-      game.displayResult("Correct!");
-      game.questionOver(true);
+      game.questionOver(true, 3000);
+      setTimeout(function() {
+        game.displayResult("Correct!", correctAnswer);
+      }, 1500);
     } else {
       $(this).addClass("incorrect-clicked");
       $(".correct").addClass("correct-clicked");
-      game.displayResult("Incorrect!");
-      game.questionOver(false);
+      game.questionOver(false, 3000);
+      setTimeout(function() {
+        game.displayResult("Incorrect!", correctAnswer);
+      }, 1500);
     }
   });
 
