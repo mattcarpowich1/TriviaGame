@@ -7,7 +7,8 @@ $(function() {
                     ["Rebellion", "Arcade Fire"],
                     ["Boulevard of Broken Dreams", "Green Day"],
                     ["Vertigo", "U2"] ],
-      correctChoice: 2
+      correctChoice: 2,
+      imgName: "green_day"
     },
     {
       text: "Go, go, go, go go, go, go, shawty, <br>It's your birthday...", 
@@ -15,7 +16,8 @@ $(function() {
                     ["Poker Face", "Lady Gaga"],
                     ["Lose Yourself", "Eminem"], 
                     ["Jesus Walks", "Kanye West"] ],
-      correctChoice: 0
+      correctChoice: 0, 
+      imgName: "50_cent"
     },
     {
       text: "Wait, they don't love you like I love you...",
@@ -23,7 +25,8 @@ $(function() {
                     ["Time to Pretend", "MGMT"],
                     ["Boulevard of Broken Dreams", "Green Day"],
                     ["Maps", "The Yeah Yeah Yeahs"] ],
-      correctChoice: 3
+      correctChoice: 3,
+      imgName: "maps"
     },
     {
       text: "My baby don't mess around,<br>Because she loves me so,<br>And this I know for sho...",
@@ -31,7 +34,8 @@ $(function() {
                     ["Hey Ya", "Outkast"],
                     ["Crazy", "Gnarls Barkley"],
                     ["My Girls", "Animal Collective"] ],
-      correctChoice: 1
+      correctChoice: 1,
+      imgName: "outkast"
     },
     {
       text: "I remember when,<br>I remember, I remember when I lost my mind...",
@@ -39,7 +43,8 @@ $(function() {
                     ["Feel Good Inc.", "Gorillaz"],
                     ["Crazy", "Gnarls Barkley"],
                     ["Such Great Heights", "The Postal Service"] ],
-      correctChoice: 2
+      correctChoice: 2,
+      imgName: "gnarls"
     }, 
     {
       text: "Counting all different ideas drifting away,<br>Past and present, they don't matter.<br>Now the future's sorted out...",
@@ -47,7 +52,8 @@ $(function() {
                     ["Boulevard of Broken Dreams", "Green Day"],
                     ["Vertigo", "U2"],
                     ["Rebellion", "Arcade Fire"] ],
-      correctChoice: 0
+      correctChoice: 0,
+      imgName: "phoenix"
     },
     {
       text: "Coming out of my cage,<br>And I've been doing just fine...",
@@ -55,7 +61,8 @@ $(function() {
                     ["New Slang", "The Shins"],
                     ["Poker Face", "Lady Gaga"],
                     ["Mr. Brightside", "The Killers"] ],
-      correctChoice: 3
+      correctChoice: 3,
+      imgName: "killers"
     },
     {
       text: "So if you're lonely,<br>You know I'm here waiting for you...",
@@ -63,7 +70,8 @@ $(function() {
                     ["Take Me Out", "Franz Ferdinand"],
                     ["Float On", "Modest Mouse"],
                     ["Paper Planes", "M.I.A."] ],
-      correctChoice: 1
+      correctChoice: 1,
+      imgName: "franz"
     },
     {
       text: "Sleeping is giving in,<br>No matter what the time is...",
@@ -71,7 +79,8 @@ $(function() {
                     ["Rebellion", "Arcade Fire"],
                     ["Jesus Walks", "Kanye West"],
                     ["Viva La Vida", "Coldplay"] ],
-      correctChoice: 1
+      correctChoice: 1,
+      imgName: "funeral"
     },
     {
       text: "Gold teeth and a curse for this town,<br>Were all in my mouth...",
@@ -79,7 +88,8 @@ $(function() {
                     ["Mr. Brightside", "The Killers"],
                     ["Time to Pretend", "MGMT"],
                     ["Lose Yourself", "Eminem"] ],
-      correctChoice: 0
+      correctChoice: 0,
+      imgName: "shins"
     }
   ];
 
@@ -156,26 +166,34 @@ $(function() {
     this.timeRanOut = function() {
       var correctAnswer = questions[game.currentQuestion - 1].answerList[questions[game.currentQuestion - 1].correctChoice];
       this.displayResult("Time Ran Out!", correctAnswer);
-      this.questionOver(false, 1500);
+      this.questionOver(false, 3000);
     };
 
     //shows the result after user guesses answer, or if time runs out
     this.displayResult = function(str, correct) {
       var correctString = 'The answer was "' + correct[0] + '" by ' + correct[1] + '!';
-      $("#question_screen").hide();
-      var message = str;
+      // $("#question_screen").hide();
       var $resultMessage = $("<p>");
       var $answerMessage = $("<p>");
-      $resultMessage.text(message);
+      $resultMessage.text(str);
       $answerMessage.html(correctString);
-      $answerMessage.addClass("answer_message");
+      $answerMessage.addClass("answer-message");
       $resultMessage.addClass("result-message");
       if (str === "Incorrect!" || str === "Time Ran Out!") {
         $resultMessage.addClass("incorrect");
       }
-      $("#result_screen").append($resultMessage);
-      $("#result_screen").append($answerMessage);
-      $("#result_screen").show();
+
+      //create image with album pic
+      var $pic = $("<img>");
+      $pic.attr("src", "assets/images/" + questions[game.currentQuestion - 1].imgName + ".jpg");
+
+      $("#img_info").append($pic);
+      $("#img_info").append($answerMessage);
+      $("#result_screen").prepend($resultMessage);
+      setTimeout(function() {
+        $("#question_screen").hide();
+        $("#result_screen").show();
+      }, 1000);
     }
 
     this.questionOver = function(correct, t) {
@@ -190,7 +208,9 @@ $(function() {
           $(".answer").eq(index).removeClass("correct-clicked");
           $(".answer").eq(index).removeClass("incorrect-clicked");
         });
-        $("#result_screen").empty();
+        // console.log($("#result_screen").children().eq(0).text(""));
+        $("#result_screen").children().eq(0).remove();
+        $("#img_info").empty();
         $("#result_screen").hide();
         if (_this.remainingQuestions === 0) {
           _this.endGame();
@@ -203,7 +223,6 @@ $(function() {
     };
 
     this.endGame = function() {
-      // var _this = this;
       $.each($(".answer"), function( index, value ) {
         $(".answer").eq(index).empty();
         $(".answer").eq(index).removeClass("correct");
@@ -241,16 +260,12 @@ $(function() {
     if ($(this).hasClass("correct")) {
       $(this).addClass("correct-clicked");
       game.questionOver(true, 3000);
-      setTimeout(function() {
-        game.displayResult("Correct!", correctAnswer);
-      }, 1500);
+      game.displayResult("Correct!", correctAnswer);
     } else {
       $(this).addClass("incorrect-clicked");
       $(".correct").addClass("correct-clicked");
       game.questionOver(false, 3000);
-      setTimeout(function() {
-        game.displayResult("Incorrect!", correctAnswer);
-      }, 1500);
+      game.displayResult("Incorrect!", correctAnswer);
     }
   });
 
